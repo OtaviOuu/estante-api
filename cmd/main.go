@@ -71,7 +71,7 @@ func main() {
 	}
 	defer db.Close()
 
-	books, err := getBookByName("IMPA", db)
+	books, err := getBookByName("prf", db)
 	if err != nil {
 		log.Println(err)
 	}
