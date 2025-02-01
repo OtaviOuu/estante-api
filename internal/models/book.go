@@ -2,46 +2,42 @@ package models
 
 type Condition int
 
-const (
-	Usado Condition = iota
-	Novo
-)
-
 type IBookBuilder interface {
 	SetID(id string) *BookBuilder
 	SetName(name string) *BookBuilder
 	SetAuthor(author string) *BookBuilder
 	SetDescription(description string) *BookBuilder
 	SetPricing(pricing float64) *BookBuilder
-	SetCondition(condition Condition) *BookBuilder
+	SetCondition(condition string) *BookBuilder
 	SetLanguages(languages string) *BookBuilder
 	SetPublisher(publisher string) *BookBuilder
-	SetYear(year int) *BookBuilder
+	SetYear(year string) *BookBuilder
 	SetLink(link string) *BookBuilder
 	SetISBN(isbn string) *BookBuilder
 	Build() *Book
 }
-
 type Book struct {
-	ID          string
-	Name        string
-	Author      string
-	Description string
-	Pricing     float64
-	Condition   Condition
-	Languages   string
-	Publisher   string
-	Year        int
-	Link        string
-	ISBN        string
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Author      string  `json:"author"`
+	Description string  `json:"description"`
+	Pricing     float64 `json:"pricing"`
+	Condition   string  `json:"condition"`
+	Languages   string  `json:"languages"`
+	Publisher   string  `json:"publisher"`
+	Year        string  `json:"year"`
+	Link        string  `json:"link"`
+	ISBN        string  `json:"isbn"`
 }
 
 type BookBuilder struct {
-	book Book
+	book *Book
 }
 
 func NewBookBuilder() IBookBuilder {
-	return &BookBuilder{}
+	return &BookBuilder{
+		book: &Book{},
+	}
 }
 
 func (b *BookBuilder) SetID(id string) *BookBuilder {
@@ -69,7 +65,7 @@ func (b *BookBuilder) SetPricing(pricing float64) *BookBuilder {
 	return b
 }
 
-func (b *BookBuilder) SetCondition(condition Condition) *BookBuilder {
+func (b *BookBuilder) SetCondition(condition string) *BookBuilder {
 	b.book.Condition = condition
 	return b
 }
@@ -84,7 +80,7 @@ func (b *BookBuilder) SetPublisher(publisher string) *BookBuilder {
 	return b
 }
 
-func (b *BookBuilder) SetYear(year int) *BookBuilder {
+func (b *BookBuilder) SetYear(year string) *BookBuilder {
 	b.book.Year = year
 	return b
 }
@@ -100,5 +96,5 @@ func (b *BookBuilder) SetISBN(isbn string) *BookBuilder {
 }
 
 func (b *BookBuilder) Build() *Book {
-	return &b.book
+	return b.book
 }

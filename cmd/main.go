@@ -1,82 +1,26 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
+	"net/http"
 
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/OtaviOuu/exatas-estante-api/internal/handlers"
+	"github.com/OtaviOuu/exatas-estante-api/internal/services"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
-func db_connect() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./books.db")
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
-}
-
-func getBooks(page int, pageSize int, db *sql.DB) []string {
-	rows, err := db.Query("SELECT book_title FROM books LIMIT ? OFFSET ?", pageSize, (page-1)*pageSize)
-	if err != nil {
-		return nil
-	}
-	defer rows.Close()
-
-	titles := []string{}
-	for rows.Next() {
-		var title string
-		err = rows.Scan(&title)
-		if err != nil {
-			return nil
-		}
-		titles = append(titles, title)
-	}
-	return titles
-}
-
-func getBookByName(name string, db *sql.DB) ([]string, error) {
-	rows, err := db.Query("SELECT book_title FROM books WHERE book_title LIKE ? OR author LIKE ? OR book_description LIKE ?", "%"+name+"%", "%"+name+"%", "%"+name+"%")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	matches := []string{}
-	for rows.Next() {
-		var title string
-		err = rows.Scan(&title)
-		if err != nil {
-			return nil, err
-		}
-
-		matches = append(matches, title)
-	}
-	return matches, nil
-}
-
 func main() {
-	db, err := db_connect()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	bookService := services.NewBookService()
+	bookHandler := handlers.NewBookHandler(bookService)
 
-	books, err := getBookByName("prf", db)
-	if err != nil {
-		log.Println(err)
-	}
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
-	for _, book := range books {
-		fmt.Println(book)
-	}
+	r.Use(middleware.AllowContentType("application/json", "text/xml"))
+
+	r.Get("/books", bookHandler.GetAllWithPagination)
+
+	http.ListenAndServe(":8080", r)
 }
