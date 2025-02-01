@@ -40,7 +40,7 @@ type BookBuilder struct {
 	book Book
 }
 
-func NewBookBuilder() *BookBuilder {
+func NewBookBuilder() IBookBuilder {
 	return &BookBuilder{}
 }
 
@@ -99,6 +99,6 @@ func (b *BookBuilder) SetISBN(isbn string) *BookBuilder {
 	return b
 }
 
-func (b *BookBuilder) Build() Book {
-	return b.book
+func (b *BookBuilder) Build() *Book {
+	return &b.book
 }
