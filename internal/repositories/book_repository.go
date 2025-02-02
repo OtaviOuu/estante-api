@@ -3,8 +3,8 @@ package repositories
 import (
 	"database/sql"
 
-	"github.com/OtaviOuu/exatas-estante-api/internal/database"
-	"github.com/OtaviOuu/exatas-estante-api/internal/models"
+	"github.com/OtaviOuu/estante-api/internal/database"
+	"github.com/OtaviOuu/estante-api/internal/models"
 )
 
 type IBookRepository interface{}

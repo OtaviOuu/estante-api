@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/OtaviOuu/exatas-estante-api/internal/services"
+	"github.com/OtaviOuu/estante-api/internal/services"
 )
 
 type BookHandler struct {

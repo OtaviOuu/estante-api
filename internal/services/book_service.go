@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/OtaviOuu/exatas-estante-api/internal/models"
-	"github.com/OtaviOuu/exatas-estante-api/internal/repositories"
+	"github.com/OtaviOuu/estante-api/internal/models"
+	"github.com/OtaviOuu/estante-api/internal/repositories"
 )
 
 type IBookService interface {
