@@ -27,5 +27,5 @@ func main() {
 		port = ":3000"
 	}
 
-	http.ListenAndServe("0.0.0.0"+port, r)
+	http.ListenAndServe("0.0.0.0:"+port, r)
 }
