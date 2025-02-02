@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/OtaviOuu/estante-api/internal/handlers"
 	"github.com/OtaviOuu/estante-api/internal/services"
@@ -21,5 +22,10 @@ func main() {
 
 	r.Get("/books", bookHandler.GetAllWithPagination)
 
-	http.ListenAndServe(":8080", r)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = ":3000"
+	}
+
+	http.ListenAndServe("0.0.0.0"+port, r)
 }

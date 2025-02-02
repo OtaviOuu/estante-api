@@ -3,18 +3,18 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
+	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
 )
 
-// Definindo a estrutura Database
 type Database struct {
 	*sql.DB
 }
 
-// Nova função para conectar ao PostgreSQL
 func NewDatabase() (*Database, error) {
-	connStr := "postgresql://postgres:ZmaQuCHiRxfYVXhmdynawjYolUfamNHO@viaduct.proxy.rlwy.net:30025/railway"
+	connStr := os.Getenv("DB_URL")
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
