@@ -1,9 +1,9 @@
 {
     "build": {
       "commands": [
-        "go build -o /app/out ./cmd/main.go"
+        "go build -o ./out ./cmd/main.go"
       ]
     },
-    "start": "/app/out"
+    "start": "./out"
   }
   
