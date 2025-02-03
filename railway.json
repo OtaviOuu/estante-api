@@ -1,9 +1,10 @@
 {
     "build": {
       "commands": [
-        "go build -o ./out ./cmd/main.go"
+        "go build -o /app/out ./cmd/main.go",
+        "chmod +x /app/out"
       ]
     },
-    "start": "./out"
+    "start": "/app/out"
   }
   
