@@ -1,8 +1,7 @@
 {
     "build": {
       "commands": [
-        "go build -o /app/out ./cmd/main.go",
-        "chmod +x /app/out"
+        "go build -o /app/out ./cmd/main.go"
       ]
     },
     "start": "/app/out"
