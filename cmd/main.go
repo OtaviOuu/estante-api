@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 
 	r := chi.NewRouter()
 
+	r.Use(cors.Default().Handler)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
@@ -24,8 +26,11 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":3000"
+		port = "8080"
 	}
 
-	http.ListenAndServe("0.0.0.0:"+port, r)
+	err := http.ListenAndServe("0.0.0.0:"+port, r)
+	if err != nil {
+		panic(err)
+	}
 }
