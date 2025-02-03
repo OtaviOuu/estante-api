@@ -1,9 +1,7 @@
 {
     "build": {
-      "commands": [
-        "go build -o /app/out ./cmd/main.go"
-      ]
+      "dockerfile": "./Dockerfile"
     },
-    "start": "/app/out"
+    "start": "/root/out"
   }
   
