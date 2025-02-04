@@ -20,8 +20,6 @@ func NewBookHandler(service *services.BookService) *BookHandler {
 }
 
 func (h *BookHandler) GetAllWithPagination(w http.ResponseWriter, r *http.Request) {
-	encoder := json.NewEncoder(w)
-
 	pageIndex, err := strconv.Atoi(r.URL.Query().Get("page"))
 	if err != nil {
 		http.Error(w, "Invalid page", http.StatusBadRequest)
@@ -34,6 +32,22 @@ func (h *BookHandler) GetAllWithPagination(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	keyword := r.URL.Query().Get("q")
+	if keyword != "" {
+		booksFound, err := h.service.GetByKeyWord(pageIndex, pageSize, keyword)
+		if err != nil {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			log.Printf("Error fetching books: %v", err)
+			return
+		}
+
+		encoder := json.NewEncoder(w)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		encoder.Encode(booksFound)
+		return
+	}
+
 	booksFound, err := h.service.GetAllWithPagination(pageIndex, pageSize)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -41,6 +55,7 @@ func (h *BookHandler) GetAllWithPagination(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	encoder := json.NewEncoder(w)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	encoder.Encode(booksFound)

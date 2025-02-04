@@ -25,6 +25,14 @@ func NewBookService() *BookService {
 }
 
 func (s *BookService) GetAllWithPagination(page int, pageSize int) ([]*models.Book, error) {
+	if page <= 0 {
+		page = 1
+	}
+
+	if pageSize < 16 {
+		pageSize = 16
+	}
+
 	foundBooks, err := s.repo.GetAllWithPagination(page, pageSize)
 	if err != nil {
 		return nil, err
@@ -33,6 +41,19 @@ func (s *BookService) GetAllWithPagination(page int, pageSize int) ([]*models.Bo
 	return foundBooks, nil
 }
 
-func (s *BookService) getByName(name string) ([]string, error) {
-	return nil, nil
+func (s *BookService) GetByKeyWord(page int, pageSize int, keyword string) ([]*models.Book, error) {
+	if page <= 0 {
+		page = 1
+	}
+
+	if pageSize < 16 {
+		pageSize = 16
+	}
+
+	foundBooks, err := s.repo.GetByKeyWord(page, pageSize, keyword)
+	if err != nil {
+		return nil, err
+	}
+
+	return foundBooks, nil
 }
